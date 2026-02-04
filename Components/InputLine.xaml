@@ -1,0 +1,14 @@
+<UserControl
+x:Class="Archivum.InputLine"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:uc="clr-namespace:Archivum">
+	<Grid Margin="4">
+		<Grid.RowDefinitions>
+			<RowDefinition/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<TextBlock Text="{Binding LabelText}" Grid.Row="0" x:Name="InputLineLabel"/>
+		<TextBox Grid.Row="1" x:Name="InputLineText" TextChanged="textChanged"/>
+	</Grid>
+</UserControl>

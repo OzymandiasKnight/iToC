@@ -1,0 +1,48 @@
+<Page x:Class="Archivum.ProjectPage"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:uc="clr-namespace:Archivum">
+<Grid VerticalAlignment="Top" Margin="16">
+	<Grid.RowDefinitions>
+		<RowDefinition />
+		<RowDefinition />
+		<RowDefinition />
+	</Grid.RowDefinitions>
+	<!--Project Name-->
+	<uc:InputLine LabelText="Project name" Grid.Row="0"/>
+	<!--Project Options-->
+	<Grid Grid.Row="1" Height="96">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="3*"/>
+		</Grid.ColumnDefinitions>
+		<!--Size-->
+		<Grid Grid.Column="0">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<uc:InputLine LabelText="Width" DefaultValue="16" IsNumeric="True" Grid.Row="0" />
+			<uc:InputLine LabelText="Height" DefaultValue="128" IsNumeric="True" Grid.Row="1" />
+		</Grid>
+		<!--Export Line-->
+		<Grid Grid.Column="1">
+			<Grid.RowDefinitions>
+				<RowDefinition/>
+				<RowDefinition/>
+			</Grid.RowDefinitions>
+			<uc:InputLine LabelText="Code line" Grid.Row="0" />
+			<Grid Grid.Row="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+				<uc:InputLine LabelText="X Placeholder" DefaultValue="X" Grid.Column="0" />
+				<uc:InputLine LabelText="Y Placeholder" DefaultValue="Y" Grid.Column="1" />
+			</Grid>
+		</Grid>
+	</Grid>
+	<!--User Paint Square-->
+	<Grid x:Name="CanvasHolder" Grid.Row="2"/>
+</Grid>
+</Page>
