@@ -23,8 +23,8 @@ xmlns:uc="clr-namespace:Archivum">
 				<RowDefinition/>
 				<RowDefinition/>
 			</Grid.RowDefinitions>
-			<uc:InputLine x:Name="WidthLine" LabelText="Width" DefaultValue="16" IsNumeric="True" Grid.Row="0" />
-			<uc:InputLine x:Name="HeightLine" LabelText="Height" DefaultValue="128" IsNumeric="True" Grid.Row="1" />
+			<uc:InputLine x:Name="WidthLine" LabelText="Width" DefaultValue="128" IsNumeric="True" Grid.Row="0" />
+			<uc:InputLine x:Name="HeightLine" LabelText="Height" DefaultValue="32" IsNumeric="True" Grid.Row="1" />
 		</Grid>
 		<!--Export Line-->
 		<Grid Grid.Column="1">
