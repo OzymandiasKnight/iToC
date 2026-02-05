@@ -16,6 +16,10 @@ namespace Archivum
 
 		public string LabelText { get; set; }
 
+		public delegate void TextChangedHandler(string new_text);
+		
+		public event TextChangedHandler TextChanged;
+
 		//Numeric only property
 		private bool _isNumeric;
 		public bool IsNumeric {
@@ -66,7 +70,9 @@ namespace Archivum
 		private void textChanged(object sender, TextChangedEventArgs e) {
 			if (!_isUpdate) {
 				TextValue = InputLineText.Text;
+				TextChanged?.Invoke(TextValue);
 			}
+			
 		}
 	}
 }
