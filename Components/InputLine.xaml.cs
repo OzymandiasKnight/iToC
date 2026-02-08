@@ -12,6 +12,7 @@ namespace Archivum
 			InputLineLabel.Foreground = PaletteSystem.text;
 			InputLineText.Background = PaletteSystem.background;
 			InputLineText.Foreground = PaletteSystem.text;
+			//InputLineText.BorderBrush = PaletteSystem.border;
 		}
 
 		public string LabelText { get; set; }

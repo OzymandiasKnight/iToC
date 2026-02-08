@@ -44,7 +44,9 @@ xmlns:uc="clr-namespace:Archivum">
 		</Grid>
 	</Grid>
 	<!--User Paint Square-->
-	<Grid x:Name="CanvasHolder" Grid.Row="2" Margin="8"/>
+	<Viewbox Grid.Row="2">
+		<Grid x:Name="CanvasHolder" Margin="8"/>
+	</Viewbox>
 	<TextBox x:Name="CodeHolder" IsReadOnly="True" Grid.Row="3" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
 </Grid>
 </Page>

@@ -18,8 +18,10 @@ namespace Archivum
 			
 			//Pixel canva
 			pixel_canva.Source = bitmap;
+			pixel_canva.SnapsToDevicePixels = true;
+			RenderOptions.SetBitmapScalingMode(pixel_canva, BitmapScalingMode.NearestNeighbor);
 			pixel_canva.MouseLeftButtonDown += new MouseButtonEventHandler(canvas_mouse_handler);
-			pixel_canva.LayoutTransform = new ScaleTransform(2,2);
+			pixel_canva.LayoutTransform = new ScaleTransform(5,5);
 			CanvasHolder.Background = PaletteSystem.text;
 			CanvasHolder.Children.Add(pixel_canva);
 			//Width and Height parameters
@@ -43,8 +45,13 @@ namespace Archivum
 							pBackBuffer += y * bitmap.BackBufferStride;
 							pBackBuffer += x * 4;
 							if ((*(int*)pBackBuffer) != 0) {
-								string code_line = CodeLine.TextValue.Replace(XLine.TextValue, x.ToString());
-								code_line = code_line.Replace(YLine.TextValue, y.ToString());
+								string code_line = CodeLine.TextValue;
+								if (XLine.TextValue.Length > 0) {
+									code_line = code_line.Replace(XLine.TextValue, x.ToString());
+								}
+								if (YLine.TextValue.Length > 0) {
+									code_line = code_line.Replace(YLine.TextValue, y.ToString());
+								}
 								CodeHolder.Text += code_line + "\n";
 							}
 						}
@@ -56,22 +63,32 @@ namespace Archivum
 			}
 		}
 
-
-
 		private void canvas_mouse_handler(object sender, MouseEventArgs e) {
 			int column = (int) e.GetPosition(pixel_canva).X;
 			int row = (int) e.GetPosition(pixel_canva).Y;
 			DrawPixel(column, row, 255, 255, 255);
 		}
 
+		public Color GetPixel(int x, int y, WriteableBitmap wirteable_bitmap) {
+			//Check out of bound
+			if (x < bitmap.Width && y < bitmap.Height) {
+				unsafe {
+					IntPtr pBackBuffer = bitmap.BackBuffer;
+					pBackBuffer += y * bitmap.BackBufferStride;
+					pBackBuffer += x * 4;
+					return new Color(*(int*)pBackBuffer);
+				}
+			}
+			return new Color(0);
+		}
+
 
 		static void DrawPixel(int x, int y, int r, int g, int b) {
 			//Check out of bound
 			if (x < bitmap.Width && y < bitmap.Height) {
-					try {
+				try {
 					bitmap.Lock();
-					unsafe
-					{
+					unsafe {
 						IntPtr pBackBuffer = bitmap.BackBuffer;
 						pBackBuffer += y * bitmap.BackBufferStride;
 						pBackBuffer += x * 4;

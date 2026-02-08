@@ -3,8 +3,7 @@ using System.Windows.Controls;
 
 namespace Archivum
 {
-	public class NavigationSystem
-	{
+	public class NavigationSystem {
 		private static NavigationSystem instance;
 		public static NavigationSystem Instance => instance ??= new NavigationSystem();
 
@@ -12,6 +11,6 @@ namespace Archivum
 
 		public void Navigate(Page page) {
 			NavigationRequest?.Invoke(page);
-	}
+		}
 	}
 }
