@@ -4,8 +4,6 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 Title="HomePage"
 >
-		<Grid>
-			<TextBlock Text="Archivum"/>
-			<Button Content="New Project" Click="NewProject" Width="200" Height="200"/>
-		</Grid>
+	<WrapPanel x:Name="ProjectsGallery">
+	</WrapPanel>
 </Page>

@@ -1,0 +1,7 @@
+<UserControl
+x:Class="Archivum.ProjectCard"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:uc="clr-namespace:Archivum">
+			<Button Content="New Project" Click="OpenProject" Width="Auto" Paddig="10" Height="200"/>
+</UserControl>

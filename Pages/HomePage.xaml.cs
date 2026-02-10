@@ -8,6 +8,10 @@ namespace Archivum
 		public HomePage()
 		{
 			InitializeComponent();
+			for (int x=0; x<10; x++) {
+				ProjectCard new_card = new ProjectCard();
+				ProjectsGallery.Children.Add(new_card);
+			}
 		}
 
 		private void NewProject(object sender, RoutedEventArgs e)
