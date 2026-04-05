@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows;
 
@@ -8,15 +11,28 @@ namespace Archivum
 		public HomePage()
 		{
 			InitializeComponent();
-			for (int x=0; x<10; x++) {
+			string projectPath = Utilitary.getAppPath();
+
+			if (!Directory.Exists(projectPath)) {
+				Directory.CreateDirectory(projectPath);
+			};
+			string[] projectFiles = Directory.GetFiles(projectPath);
+
+			foreach (string project in projectFiles) {
 				ProjectCard new_card = new ProjectCard();
+				new_card.setProjectPath(project);
 				ProjectsGallery.Children.Add(new_card);
 			}
 		}
 
-		private void NewProject(object sender, RoutedEventArgs e)
-		{
+		public void openNewProject(object sender, RoutedEventArgs e) {
 			NavigationSystem.Instance.Navigate(new ProjectPage());
 		}
+
+		public void openProjectFolder(object sender, RoutedEventArgs e) {
+			string projectPath = Utilitary.getAppPath();
+			Process.Start("explorer.exe", projectPath);
+		}
+
 	}
 }

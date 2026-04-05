@@ -4,18 +4,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Input;
 using System;
-
+using System.Collections.Generic;
 namespace Archivum
 {
+	
+	
+
 	public partial class ProjectPage : Page
 	{
-		static Image pixel_canva = new Image();
-		static WriteableBitmap bitmap = new WriteableBitmap(400, 400, 96, 96, PixelFormats.Bgr32, null);
-		
-		public ProjectPage()
+		Image pixel_canva = new Image();
+		WriteableBitmap bitmap = new WriteableBitmap(400, 400, 96, 96, PixelFormats.Bgr32, null);
+		List<Vector> painted = new List<Vector>();
+
+		public ProjectPage(string project_file = "")
 		{
 			InitializeComponent();
-			
+
+	
 			//Pixel canva
 			pixel_canva.Source = bitmap;
 			pixel_canva.SnapsToDevicePixels = true;
@@ -27,33 +32,66 @@ namespace Archivum
 			//Width and Height parameters
 			widthChange(WidthLine.TextValue);
 			heightChange(HeightLine.TextValue);
+			
+			//Change Events
 			HeightLine.TextChanged += heightChange;
 			WidthLine.TextChanged += widthChange;
 			CodeLine.TextChanged += codeLineChange;
 			XLine.TextChanged += codeLineChange;
 			YLine.TextChanged += codeLineChange;
+
+
+			//Setting project infos
+			ProjectInfos infos = Utilitary.loadProject(project_file);
+
+			ProjectTitle.TextValue = infos.name;
+			WidthLine.TextValue = infos.width.ToString();
+			HeightLine.TextValue = infos.height.ToString();
+			CodeLine.TextValue = infos.codeLine;
+			XLine.TextValue = infos.xLine;
+			YLine.TextValue = infos.yLine;
+			foreach(Vector pix in infos.pixels) {
+				painted.Add(new Vector(pix.X, pix.Y));
+				DrawPixel((int)pix.X, (int)pix.Y, 255, 255, 255);
+			}
+			updateCode();
 		}
 	
+		public void backHome(object sender, RoutedEventArgs e) {
+			ProjectInfos project = new ProjectInfos();
+			project.name = ProjectTitle.TextValue;
+			project.height = Int32.Parse(WidthLine.TextValue);
+			project.width = Int32.Parse(WidthLine.TextValue);
+			project.codeLine = CodeLine.TextValue;
+			project.pixels = painted;
+			project.xLine = XLine.TextValue;
+			project.yLine = YLine.TextValue;
+			if (project.name != "") {
+				Utilitary.saveProject(project);
+			}
+			NavigationSystem.Instance.Navigate(new HomePage());
+		}
+
 		public void updateCode() {
 			CodeHolder.Text = "";
 			try {
 				bitmap.Lock();
 				unsafe {
-					for (int x=0; x<bitmap.Width; x++) {
-						for (int y=0; y<bitmap.Height; y++) {
-							IntPtr pBackBuffer = bitmap.BackBuffer;
-							pBackBuffer += y * bitmap.BackBufferStride;
-							pBackBuffer += x * 4;
-							if ((*(int*)pBackBuffer) != 0) {
-								string code_line = CodeLine.TextValue;
-								if (XLine.TextValue.Length > 0) {
-									code_line = code_line.Replace(XLine.TextValue, x.ToString());
-								}
-								if (YLine.TextValue.Length > 0) {
-									code_line = code_line.Replace(YLine.TextValue, y.ToString());
-								}
-								CodeHolder.Text += code_line + "\n";
+					foreach(Vector pix in painted) {
+						int x = (int)pix.X;
+						int y = (int)pix.Y;
+						IntPtr pBackBuffer = bitmap.BackBuffer;
+						pBackBuffer += y * bitmap.BackBufferStride;
+						pBackBuffer += x * 4;
+						if ((*(int*)pBackBuffer) != 0) {
+							string code_line = CodeLine.TextValue;
+							if (XLine.TextValue.Length > 0) {
+								code_line = code_line.Replace(XLine.TextValue, x.ToString());
 							}
+							if (YLine.TextValue.Length > 0) {
+								code_line = code_line.Replace(YLine.TextValue, y.ToString());
+							}
+							CodeHolder.Text += code_line + "\n";
 						}
 					}
 				}
@@ -66,7 +104,17 @@ namespace Archivum
 		private void canvas_mouse_handler(object sender, MouseEventArgs e) {
 			int column = (int) e.GetPosition(pixel_canva).X;
 			int row = (int) e.GetPosition(pixel_canva).Y;
-			DrawPixel(column, row, 255, 255, 255);
+			Color col_target = GetPixel(column, row, bitmap);
+			if (col_target.R > 0) {
+				painted.Remove(new Vector(column, row));
+				DrawPixel(column, row, 0, 0, 0);
+			}
+			else {
+				painted.Add(new Vector(column, row));
+				DrawPixel(column, row, 255, 255, 255);
+			}
+			updateCode();
+			
 		}
 
 		public Color GetPixel(int x, int y, WriteableBitmap wirteable_bitmap) {
@@ -83,7 +131,7 @@ namespace Archivum
 		}
 
 
-		static void DrawPixel(int x, int y, int r, int g, int b) {
+		void DrawPixel(int x, int y, int r, int g, int b) {
 			//Check out of bound
 			if (x < bitmap.Width && y < bitmap.Height) {
 				try {
@@ -93,9 +141,9 @@ namespace Archivum
 						pBackBuffer += y * bitmap.BackBufferStride;
 						pBackBuffer += x * 4;
 
-						int colorData = 255 << 16; // R
-						colorData |= 255 << 8;   // G
-						colorData |= 255 << 0;   // B
+						int colorData = r << 16; // R
+						colorData |= g << 8;   // G
+						colorData |= b << 0;   // B
 
 						*((int*) pBackBuffer) = colorData;
 

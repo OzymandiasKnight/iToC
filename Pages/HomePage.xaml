@@ -3,7 +3,25 @@ x:Class="Archivum.HomePage"
 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 Title="HomePage"
+xmlns:local="clr-namespace:Archivum"
 >
-	<WrapPanel x:Name="ProjectsGallery">
-	</WrapPanel>
+	<Grid Margin="16">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Label Content="Projects list" Grid.Row="0" Foreground="{x:Static local:PaletteSystem.text}"/>
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<Button Content="Create new project" Click="openNewProject" Grid.Column="0" Margin="8" Padding="8"/>
+			<Button Content="Open projects folder" Click="openProjectFolder" Grid.Column="1" Margin="8"/>
+		</Grid>
+
+		<WrapPanel Grid.Row="2" x:Name="ProjectsGallery" Margin="4">
+		</WrapPanel>
+	</Grid>
 </Page>
