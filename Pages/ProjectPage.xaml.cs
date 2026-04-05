@@ -15,6 +15,7 @@ namespace Archivum
 		Image pixel_canva = new Image();
 		WriteableBitmap bitmap = new WriteableBitmap(400, 400, 96, 96, PixelFormats.Bgr32, null);
 		List<Vector> painted = new List<Vector>();
+		int canva_scale = 5;
 
 		public ProjectPage(string project_file = "")
 		{
@@ -26,7 +27,7 @@ namespace Archivum
 			pixel_canva.SnapsToDevicePixels = true;
 			RenderOptions.SetBitmapScalingMode(pixel_canva, BitmapScalingMode.NearestNeighbor);
 			pixel_canva.MouseLeftButtonDown += new MouseButtonEventHandler(canvas_mouse_handler);
-			pixel_canva.LayoutTransform = new ScaleTransform(5,5);
+			pixel_canva.LayoutTransform = new ScaleTransform(canva_scale,canva_scale);
 			CanvasHolder.Background = PaletteSystem.text;
 			CanvasHolder.Children.Add(pixel_canva);
 			//Width and Height parameters
@@ -47,6 +48,10 @@ namespace Archivum
 			ProjectTitle.TextValue = infos.name;
 			WidthLine.TextValue = infos.width.ToString();
 			HeightLine.TextValue = infos.height.ToString();
+			heightChange(infos.width.ToString());
+			heightChange(infos.height.ToString());
+
+
 			CodeLine.TextValue = infos.codeLine;
 			XLine.TextValue = infos.xLine;
 			YLine.TextValue = infos.yLine;
@@ -159,13 +164,15 @@ namespace Archivum
 
 		public void heightChange(string new_height) {
 			pixel_canva.Height = int.Parse(new_height);
-			CanvasHolder.Height = pixel_canva.Height*2;
+			CanvasHolder.Height = pixel_canva.Height*canva_scale;
+			painted = new List<Vector>();
 			updateCanva();
 		}
 
 		public void widthChange(string new_width) {
 			pixel_canva.Width = int.Parse(new_width);
-			CanvasHolder.Width = pixel_canva.Width*2;
+			CanvasHolder.Width = pixel_canva.Width*canva_scale;
+			painted = new List<Vector>();
 			updateCanva();
 		}
 
